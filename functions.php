@@ -102,3 +102,17 @@
     }
 
     add_filter('acf/fields/google_map/api', 'page_map_key');
+
+    // Redirect subscribers out of admin panel
+
+    function redirect_subs_to_frontend() {
+        $current_user = wp_get_current_user();
+
+        if(count($current_user->roles) == 1 AND $current_user->roles[0] == 'subscriber') {
+            wp_redirect(site_url('/'));
+            exit;
+        }
+    }
+
+    add_action('admin_init', 'redirect_subs_to_frontend');
+
