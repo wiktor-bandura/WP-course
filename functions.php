@@ -116,3 +116,13 @@
 
     add_action('admin_init', 'redirect_subs_to_frontend');
 
+    function no_subs_adminbar() {
+        $current_user = wp_get_current_user();
+
+        if(count($current_user->roles) == 1 AND $current_user->roles[0] == 'subscriber') {
+            show_admin_bar(false);
+        }
+    }
+
+    add_action('wp_loaded', 'no_subs_adminbar');
+
