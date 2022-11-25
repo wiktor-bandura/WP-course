@@ -1,15 +1,13 @@
 class MyNotes {
     constructor() {
-        this.deleteButton = document.querySelector('.delete-note');
-        this.editButton = document.querySelector('.edit-note');
-        this.updateButton = document.querySelector('.update-note');
         this.events();
     }
 
     events = () => {
-        this.deleteButton.addEventListener('click', this.deleteNote);
-        this.editButton.addEventListener('click', this.editNote);
-        this.updateButton.addEventListener('click', this.updateNote);
+        document.querySelectorAll('.delete-note').forEach(btn => btn.addEventListener('click', this.deleteNote));
+        document.querySelectorAll('.edit-note').forEach(btn => btn.addEventListener('click', this.editNote));
+        document.querySelectorAll('.update-note').forEach(btn => btn.addEventListener('click', this.editNote));
+        document.querySelector('.submit-note').addEventListener('click', this.createNote);
     }
 
     // Methods
@@ -25,9 +23,8 @@ class MyNotes {
                 }}
             )
             .then((res) => {
-                if(res.status == 200) {
+                console.log(res);
                     thisNote.style.display = 'none';
-                }
             })
             .catch((err) => console.error(err));
     }
@@ -48,9 +45,49 @@ class MyNotes {
             })
           })
             .then((res) => {
-                if(res.status == 200) {
+                console.log(res)
                     this.makeNoteReadOnly(thisNote, e);
-                }
+            })
+            .catch((err) => console.error(err));
+    }
+
+    createNote = (e) => {
+
+        fetch(`${themeData.root_url}/wp-json/wp/v2/note/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-WP-Nonce': themeData.nonce,
+            },
+            body: JSON.stringify({
+                'title': document.querySelector('.new-note-title').value,
+                'content': document.querySelector('.new-note-body').value,
+            })
+        })
+            .then((res) => res.json())
+                .then(data => {
+                    console.log(data);
+
+                    document.querySelector('.new-note-title').value = '';
+                    document.querySelector('.new-note-body').value = '';
+
+                    let html = `
+                                <label>
+                                    <input readonly class="note-title-field" value="${data.title.raw}">
+                                </label>
+                                <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit note: </span>
+                                <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete note: </span>
+                                <label>
+                                    <textarea readonly class="note-body-field">${data.content.raw}</textarea>
+                                </label>
+                                <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save note: </span>
+                    `;
+
+                    const newItem = document.createElement('li');
+                    newItem.setAttribute('data-id', data.id);
+                    newItem.innerHTML = html;
+
+                    document.querySelector('#my-notes').insertBefore(newItem, document.querySelector('#my-notes').firstChild);
             })
             .catch((err) => console.error(err));
     }
@@ -69,33 +106,28 @@ class MyNotes {
     makeNoteEditable = (note, event) => {
         const input = note.querySelector('.note-title-field');
         const area = note.querySelector('.note-body-field');
-        this.updateButton.classList.add('update-note--visible');
+        note.querySelector('.update-note').classList.add('update-note--visible');
         note.setAttribute('data-state', 'editable');
         event.target.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i> Cancel ';
 
-        const fields = [input, area];
-
-        fields.forEach((field) => {
-            field.removeAttribute('readonly');
-            field.classList.add('note-active-field');
-        });
+        input.removeAttribute('readonly');
+        input.classList.add('note-active-field');
+        area.removeAttribute('readonly');
+        area.classList.add('note-active-field');
     }
 
     makeNoteReadOnly = (note, event) => {
         const input = note.querySelector('.note-title-field');
         const area = note.querySelector('.note-body-field');
-        this.updateButton.classList.remove('update-note--visible');
+        note.querySelector('.update-note').classList.remove('update-note--visible');
         note.setAttribute('data-state', '');
         event.target.innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i> Edit note: ';
 
-        const fields = [input, area];
-
-        fields.forEach((field) => {
-            field.setAttribute('readonly', '');
-            field.classList.remove('note-active-field');
-        });
+        input.removeAttribute('readonly');
+        input.classList.remove('note-active-field');
+        area.removeAttribute('readonly');
+        area.classList.remove('note-active-field');
     }
-
 }
 
 export default MyNotes;

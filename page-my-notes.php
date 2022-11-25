@@ -11,6 +11,12 @@
         page_banner();
         ?>
         <div class="container container--narrow page-section">
+            <div class="create-note">
+                <h2 class="headline headline--medium">Create new Note</h2>
+                <input class="new-note-title" type="text" placeholder="Title">
+                <textarea class="new-note-body" placeholder="Your Note here"></textarea>
+                <span class="submit-note">Create Note</span>
+            </div>
             <ul class="min-list link-list" id="my-notes">
                 <?php
                     $user_notes = new WP_Query(array(
@@ -28,7 +34,7 @@
                                 <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit note: </span>
                                 <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete note: </span>
                                 <label>
-                                    <textarea readonly class="note-body-field"><?php echo wp_strip_all_tags(get_the_content(), false); ?></textarea>
+                                    <textarea readonly class="note-body-field"><?php echo esc_attr(wp_strip_all_tags(get_the_content(), false)); ?></textarea>
                                 </label>
                                 <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save note: </span>
                             </li>    
