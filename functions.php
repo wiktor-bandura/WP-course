@@ -54,6 +54,7 @@
 
         wp_localize_script('website-main-js','themeData', array(
                 'root_url' => get_site_url(),
+                'nonce' => wp_create_nonce('wp_rest'),
         ));
 	}
 

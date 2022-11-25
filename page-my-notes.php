@@ -22,8 +22,14 @@
                     while($user_notes->have_posts()) {
                         $user_notes->the_post(); ?>
                             <li>
-                                <input value="<?php echo esc_attr(get_the_title()); ?>">
-                                <textarea><?php echo esc_attr(get_the_content()); ?></textarea>
+                                <label>
+                                    <input class="note-title-field" value="<?php echo esc_attr(get_the_title()); ?>">
+                                </label>
+                                <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit note: </span>
+                                <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete note: </span>
+                                <label>
+                                    <textarea class="note-body-field"><?php echo esc_attr(esc_attr(get_the_content())); ?></textarea>
+                                </label>
                             </li>    
                    <?php }
                 ?>
