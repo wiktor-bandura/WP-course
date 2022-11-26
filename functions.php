@@ -98,7 +98,7 @@
 	add_action('pre_get_posts', 'page_adjust_queries');
 
     function page_map_key($api) {
-        $api['key'] = 'AIzaSyCHe5r0JEfeerpeyo51IP_kk44vxgoccuM';
+        $api['key'] = '#';
         return $api;
     }
 
@@ -150,18 +150,24 @@
 
 // Force notes to be private
 
-    function force_private($data) {
-
-        if($data['post_type'] == 'note') {
-            $data['post_content'] = sanitize_textarea_field($data['post_content']);
-	        $data['post_title'] = sanitize_text_field($data['post_title']);
-        }
-
-        if($data['post_type'] == 'note' AND $data['post_status'] != 'trash') {
-	        $data['post_status'] = 'private';
-        }
-
-        return $data;
-    }
-
-    add_filter('wp_insert_post_data', 'force_private');
+//    function force_private($data, $postarr) {
+//
+//        if($data['post-type'] == 'note') {
+//            if(count_user_posts(get_current_user_id(), 'note') > 4 AND $postarr['ID']) {
+//                die('You have reached your note limit.');
+//            }
+//        }
+//
+//        if($data['post_type'] == 'note') {
+//            $data['post_content'] = sanitize_textarea_field($data['post_content']);
+//	        $data['post_title'] = sanitize_text_field($data['post_title']);
+//        }
+//
+//        if($data['post_type'] == 'note' AND $data['post_status'] != 'trash') {
+//	        $data['post_status'] = 'private';
+//        }
+//
+//        return $data;
+//    }
+//
+//    add_filter('wp_insert_post_data', 'force_private');
