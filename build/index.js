@@ -2222,6 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
 class Like {
   constructor() {
     if (document.querySelector('.like-box')) {
+      (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["X-WP-Nonce"]) = themeData.nonce;
       this.likeBox = document.querySelector('.like-box');
       this.events();
     }
@@ -2242,14 +2243,21 @@ class Like {
       const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${themeData.root_url}/wp-json/university/managelike`, {
         professorId: box.getAttribute('data-professor')
       });
+      box.setAttribute('data-exist', 'yes');
+      let likeCount = parseInt(box.querySelector('.like-count').innerHTML);
+      likeCount++;
+      console.log(likeCount);
       console.log(response.data);
+      box.querySelector('.like-count').innerHTML = likeCount;
     } catch (err) {
       console.log(err);
     }
   };
   deleteLike = async box => {
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](`${themeData.root_url}/wp-json/university/managelike`);
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](`${themeData.root_url}/wp-json/university/managelike`, {
+        'like': box.getAttribute('data-like')
+      });
       console.log(response.data);
     } catch (err) {
       console.log(err);

@@ -9,6 +9,7 @@
 .idea/
 .DS_Store
 **/.DS_Store/**
+build
 
 .idea/**/contentModel.xml
 
