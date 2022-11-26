@@ -14,6 +14,26 @@ while(have_posts()) {
                     <?php the_post_thumbnail('portrait'); ?>
                 </div>
                 <div class="two-thirds">
+                    <?php
+                        $like_count = new WP_Query(array(
+                                'post_type' => 'like',
+                                'meta_query' => array(
+                                        array(
+                                            'key' => 'liked_professor_id',
+                                            'compare' => '=',
+                                            'value' => get_the_ID(),
+                                        )
+                                )
+                        ))
+                    ?>
+
+                    <span class="like-box">
+                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                        <span class="like-count">
+                            <?php echo $like_count->found_posts; ?>
+                        </span>
+                    </span>
                     <?php the_content(); ?>
                 </div>
             </div>

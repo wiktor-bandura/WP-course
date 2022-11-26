@@ -65,13 +65,13 @@
             <ul class="professor-cards">
                 <li class="professor-card__list-item">
                     <a href="#" class="professor-card">
-                        <img class="professor-card__image" src="images/barksalot.jpg" />
+                        <img class="professor-card__image" src="<?php echo get_theme_file_uri('/images/barksalot.jpg'); ?>" />
                         <span class="professor-card__name">Dr. Barksalot</span>
                     </a>
                 </li>
                 <li class="professor-card__list-item">
                     <a href="#" class="professor-card">
-                        <img class="professor-card__image" src="images/meowsalot.jpg" />
+                        <img class="professor-card__image" src="<?php echo get_theme_file_uri('/images/meowsalot.jpg'); ?>" />
                         <span class="professor-card__name">Dr. Meowsalot</span>
                     </a>
                 </li>
