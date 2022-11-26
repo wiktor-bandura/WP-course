@@ -2216,6 +2216,9 @@ class HeroSlider {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
 class Like {
   constructor() {
     if (document.querySelector('.like-box')) {
@@ -2228,18 +2231,29 @@ class Like {
   }
   clickDispatcher = e => {
     const currentLikeBox = e.target.closest('.like-box');
-    console.log(currentLikeBox);
     if (this.likeBox.getAttribute('data-exists') === 'yes') {
-      this.deleteLike();
+      this.deleteLike(currentLikeBox);
     } else {
-      this.createLike();
+      this.createLike(currentLikeBox);
     }
   };
-  createLike = () => {
-    console.log('CREAT');
+  createLike = async box => {
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${themeData.root_url}/wp-json/university/managelike`, {
+        professorId: box.getAttribute('data-professor')
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  deleteLike = () => {
-    console.log('DEL');
+  deleteLike = async box => {
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](`${themeData.root_url}/wp-json/university/managelike`);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 }
 /* harmony default export */ __webpack_exports__["default"] = (Like);

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 class Like {
     constructor() {
         if(document.querySelector('.like-box')) {
@@ -11,24 +13,35 @@ class Like {
     }
 
     clickDispatcher = (e) => {
-
         const currentLikeBox = e.target.closest('.like-box');
 
-        console.log(currentLikeBox);
-
         if(this.likeBox.getAttribute('data-exists') === 'yes') {
-            this.deleteLike();
+            this.deleteLike(currentLikeBox);
         } else {
-            this.createLike();
+            this.createLike(currentLikeBox);
         }
     }
 
-    createLike = () => {
-        console.log('CREAT')
+    createLike = async (box) => {
+        try {
+            const response = await axios.post(`${themeData.root_url}/wp-json/university/managelike`, {
+                professorId: box.getAttribute('data-professor'),
+            });
+            console.log(response.data);
+
+        } catch(err) {
+            console.log(err);
+        }
     }
 
-    deleteLike = () => {
-        console.log('DEL')
+    deleteLike = async (box) => {
+        try {
+            const response = await axios.delete(`${themeData.root_url}/wp-json/university/managelike`);
+            console.log(response.data);
+
+        } catch(err) {
+            console.log(err);
+        }
     }
 }
 

@@ -5,21 +5,31 @@
 	function page_register_like() {
 		register_rest_route('university', 'managelike', array(
 			'methods' => 'POST',
-			'callback' => ,
+			'callback' => 'create_like',
 		));
 
 		register_rest_route('university', 'managelike', array(
 			'methods' => 'DELETE',
-			'callback' => ,
+			'callback' => 'delete_like',
 		));
 	}
 
-	function create_like() {
+	function create_like($data) {
 
+		$professor = sanitize_text_field($data['professorId']);
+
+		wp_insert_post(array(
+			'post_type' => 'like',
+			'post_status' => 'publish',
+			'title' => 'Example like',
+			'meta_input' => array(
+				'liked_professor_id' => $professor,
+			)
+		));
 	}
 
 	function delete_like() {
-		
+		return 'Thanks for delete';
 	}
 
 	add_action('rest_api_init', 'page_register_like');
@@ -117,11 +127,11 @@ function page_search_results($data) {
 			$programs_meta_query = array('relation', 'OR');
 
 			foreach ($results['programs'] as $item) {
-				array_push($programs_meta_query, array(
-					'key' => 'related_programs',
+				$programs_meta_query[] = array(
+					'key'     => 'related_programs',
 					'compare' => 'LIKE',
-					'value' => '"'.$item['id'].'"'
-				));
+					'value'   => '"' . $item['id'] . '"'
+				);
 			}
 
 			$program_relationship_query = new WP_Query(array(

@@ -46,7 +46,7 @@ while(have_posts()) {
 
                     ?>
 
-                    <span class="like-box" data-exists="<?php echo $exist_status; ?>">
+                    <span class="like-box" data-exists="<?php echo $exist_status; ?>" data-professor="<?php the_ID(); ?>">
                         <i class="fa fa-heart-o" aria-hidden="true"></i>
                         <i class="fa fa-heart" aria-hidden="true"></i>
                         <span class="like-count">
