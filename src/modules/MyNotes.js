@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 class MyNotes {
     constructor() {
@@ -119,24 +119,16 @@ class MyNotes {
           </li>`
                 )
 
-                // notice in the above HTML for the new <li> I gave it a class of fade-in-calc which will make it invisible temporarily so we can count its natural height
-
-                let finalHeight // browser needs a specific height to transition to, you can't transition to 'auto' height
+                let finalHeight
                 let newlyCreated = document.querySelector("#my-notes li")
-
-                // give the browser 30 milliseconds to have the invisible element added to the DOM before moving on
                 setTimeout(function () {
                     finalHeight = `${newlyCreated.offsetHeight}px`
                     newlyCreated.style.height = "0px"
                 }, 30)
-
-                // give the browser another 20 milliseconds to count the height of the invisible element before moving on
                 setTimeout(function () {
                     newlyCreated.classList.remove("fade-in-calc")
                     newlyCreated.style.height = finalHeight
                 }, 50)
-
-                // wait the duration of the CSS transition before removing the hardcoded calculated height from the element so that our design is responsive once again
                 setTimeout(function () {
                     newlyCreated.style.removeProperty("height")
                 }, 450)

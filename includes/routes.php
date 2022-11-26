@@ -1,5 +1,33 @@
 <?php
 
+	// LIKE ROUTE
+
+	function page_register_like() {
+		register_rest_route('university', 'managelike', array(
+			'methods' => 'POST',
+			'callback' => ,
+		));
+
+		register_rest_route('university', 'managelike', array(
+			'methods' => 'DELETE',
+			'callback' => ,
+		));
+	}
+
+	function create_like() {
+
+	}
+
+	function delete_like() {
+		
+	}
+
+	add_action('rest_api_init', 'page_register_like');
+
+
+
+	// SEARCH ROUTES
+
 	function page_register_search() {
 		register_rest_route('university','search', array(
 			'methods' => WP_REST_Server::READABLE,

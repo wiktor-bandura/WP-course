@@ -2067,9 +2067,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_GoogleMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/GoogleMap */ "./src/modules/GoogleMap.js");
 /* harmony import */ var _modules_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Search */ "./src/modules/Search.js");
 /* harmony import */ var _modules_MyNotes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/MyNotes */ "./src/modules/MyNotes.js");
+/* harmony import */ var _modules_Like__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/Like */ "./src/modules/Like.js");
 
 
 // Our modules / classes
+
 
 
 
@@ -2082,6 +2084,7 @@ const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_2__["default
 const googleMap = new _modules_GoogleMap__WEBPACK_IMPORTED_MODULE_3__["default"]();
 const search = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]();
 const notes = new _modules_MyNotes__WEBPACK_IMPORTED_MODULE_5__["default"]();
+const like = new _modules_Like__WEBPACK_IMPORTED_MODULE_6__["default"]();
 
 /***/ }),
 
@@ -2202,6 +2205,44 @@ class HeroSlider {
   }
 }
 /* harmony default export */ __webpack_exports__["default"] = (HeroSlider);
+
+/***/ }),
+
+/***/ "./src/modules/Like.js":
+/*!*****************************!*\
+  !*** ./src/modules/Like.js ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Like {
+  constructor() {
+    if (document.querySelector('.like-box')) {
+      this.likeBox = document.querySelector('.like-box');
+      this.events();
+    }
+  }
+  events() {
+    this.likeBox.addEventListener('click', this.clickDispatcher);
+  }
+  clickDispatcher = e => {
+    const currentLikeBox = e.target.closest('.like-box');
+    console.log(currentLikeBox);
+    if (this.likeBox.getAttribute('data-exists') === 'yes') {
+      this.deleteLike();
+    } else {
+      this.createLike();
+    }
+  };
+  createLike = () => {
+    console.log('CREAT');
+  };
+  deleteLike = () => {
+    console.log('DEL');
+  };
+}
+/* harmony default export */ __webpack_exports__["default"] = (Like);
 
 /***/ }),
 
@@ -2344,25 +2385,16 @@ class MyNotes {
             <textarea readonly class="note-body-field">${response.data.content.raw}</textarea>
             <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
           </li>`);
-
-        // notice in the above HTML for the new <li> I gave it a class of fade-in-calc which will make it invisible temporarily so we can count its natural height
-
-        let finalHeight; // browser needs a specific height to transition to, you can't transition to 'auto' height
+        let finalHeight;
         let newlyCreated = document.querySelector("#my-notes li");
-
-        // give the browser 30 milliseconds to have the invisible element added to the DOM before moving on
         setTimeout(function () {
           finalHeight = `${newlyCreated.offsetHeight}px`;
           newlyCreated.style.height = "0px";
         }, 30);
-
-        // give the browser another 20 milliseconds to count the height of the invisible element before moving on
         setTimeout(function () {
           newlyCreated.classList.remove("fade-in-calc");
           newlyCreated.style.height = finalHeight;
         }, 50);
-
-        // wait the duration of the CSS transition before removing the hardcoded calculated height from the element so that our design is responsive once again
         setTimeout(function () {
           newlyCreated.style.removeProperty("height");
         }, 450);
