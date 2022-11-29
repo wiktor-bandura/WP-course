@@ -47,8 +47,13 @@
 		}
 	}
 
-	function delete_like() {
-		return 'Thanks for delete';
+	function delete_like($data) {
+		$like_ID = sanitize_text_field($data['like']);
+		if(get_current_user_id() == get_post_field('post_author', $like_ID) AND get_post_type($like_ID) == 'like') {
+			wp_delete_post($like_ID, true);
+		} else {
+			die("You don't have permission to delete that!");
+		}
 	}
 
 	add_action('rest_api_init', 'page_register_like');

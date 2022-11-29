@@ -2243,21 +2243,31 @@ class Like {
       const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${themeData.root_url}/wp-json/university/managelike`, {
         professorId: box.getAttribute('data-professor')
       });
-      box.setAttribute('data-exist', 'yes');
-      let likeCount = parseInt(box.querySelector('.like-count').innerHTML);
-      likeCount++;
-      console.log(likeCount);
-      console.log(response.data);
-      box.querySelector('.like-count').innerHTML = likeCount;
+      if (response.data != "Only logged in users can create a like.") {
+        box.setAttribute("data-exists", "yes");
+        var likeCount = parseInt(box.querySelector(".like-count").innerHTML, 10);
+        likeCount++;
+        box.querySelector(".like-count").innerHTML = likeCount;
+        box.setAttribute("data-like", response.data);
+      }
     } catch (err) {
       console.log(err);
     }
   };
   deleteLike = async box => {
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](`${themeData.root_url}/wp-json/university/managelike`, {
-        'like': box.getAttribute('data-like')
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default()({
+        url: `${themeData.root_url}/wp-json/university/managelike`,
+        method: 'delete',
+        data: {
+          "like": box.getAttribute("data-like")
+        }
       });
+      box.setAttribute("data-exists", "no");
+      var likeCount = parseInt(box.querySelector(".like-count").innerHTML, 10);
+      likeCount--;
+      box.querySelector(".like-count").innerHTML = likeCount;
+      box.setAttribute("data-like", "");
       console.log(response.data);
     } catch (err) {
       console.log(err);
